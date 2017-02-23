@@ -21,6 +21,7 @@ class NegociacaoController{
 	 	console.log(this._listaNegociacoes.negociacoes);
 	}
 
+	//Método para criar negociações quando clica em incluir 
 	_criaNegociacao(){
 		return new Negociacao(	 	
 	 		DateHelper.textoParaData(this._inputData.value),
