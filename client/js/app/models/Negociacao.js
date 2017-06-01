@@ -1,3 +1,4 @@
+// Regras de negócio, o que eu preciso para fazer uma negociação
 class Negociacao {
     
     constructor(data, quantidade, valor){
