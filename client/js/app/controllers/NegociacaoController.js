@@ -10,20 +10,21 @@ class NegociacaoController{
     }
     
     adiciona(event){
+        
         event.preventDefault();
-        let data = new Date(
-            // ... - spread operator ecmascript 6, desmembra o array da forma: 1º item do array é o 1º parametro do construtor do date;  2º item do array é o 2º parametro do construtor do date; e assim em diante. 
-            ...this._inputData.value
-                .split('-')
-                .map((item, indice) => item - indice % 2)       
-        );
+        
+        let data = DateHelper.textoParaData(this._inputData.value)
+        
         // Criando negociação
         let negociacao = new Negociacao(
             data,
             this._inputQuantidade.value,
             this._inputValor.value
         )   
-                     
+        
         console.log(negociacao);
+        console.log(DateHelper.dataParaTexto(negociacao.data));
+
     }
+    
 }
