@@ -8,7 +8,8 @@ class ListaNegociacoes{
     }
 
     get negociacoes(){
-        return this._negociacoes;
+        // [].concat(this._negociacoes) - programação defensiva, estou criando uma cópia caso alguém rode um script para alterar minha negociação quando estiver sendo criada, irá alterar a cópia, não a original. 
+        return [].concat(this._negociacoes);
     }
 
 }
