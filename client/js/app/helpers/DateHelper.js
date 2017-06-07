@@ -12,7 +12,7 @@ class DateHelper{
     
     static textoParaData(texto){
 
-        if(!/^\d{4}-\d{2}-\d{2}$/.test(texto))
+        if(!/\d{4}-\d{2}-\d{2}/.test(texto))
             throw new Error ("Insira a data no formato aaaa-mm-dd");
 
         // ... - spread operator ecmascript 6, desmembra o array da forma: 1º item do array é o 1º parametro do construtor do date;  2º item do array é o 2º parametro do construtor do date; e assim em diante. 
