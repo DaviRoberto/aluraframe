@@ -1,3 +1,5 @@
+var ConnectionFactory = (function () {
+
 var stores = ['negociacoes'];
 var version = 10;
 var dbName = 'frameNegociacao';
@@ -48,3 +50,5 @@ class ConnectionFactory{
     }
 
 }
+
+})();
