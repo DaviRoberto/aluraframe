@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aprendendo IndexDB</title>
+</head>
+<body>
+    <script src="js/app/models/Negociacao.js"></script>
+    <script>
+        // Instância de conexão
+        var connection;
+        
+        // Pedindo uma requisição
+        var openRequest = window.indexedDB.open('frameNegociacao', 10);
+        
+        // Abrindo a requisição
+        openRequest.onupgradeneeded = e => {
+            console.log('Cria ou altera um banco já existente');
+
+            let minhaConexao = e.target.result; 
+
+            if(minhaConexao.objectStoreNames.contains('negociacoes')) {                
+                minhaConexao.deleteObjectStore('negociacoes');
+            }
+            
+            minhaConexao.createObjectStore('negociacoes', { autoIncrement: true });
+        };
+
+        // Se retorna sucesso
+        openRequest.onsuccess = e =>{
+            console.log('Conexão obtida com sucesso');
+
+            connection = e.target.result;
+        };
+
+        // Se retorna erro
+        openRequest.onerror = e => {
+            console.log(e.target.error);
+        };
+
+        // Gravando istância de negociação no IDB
+        function adiciona() {
+            // Pedindo a transação. No primeiro primeiro parâmetro eu digo pra qual ObjectStore e no segundo qual a ação desejo fazer
+            let transaction = connection.transaction(['negociacoes'], 'readwrite');
+
+            // Obtendo a ObjectStore da transação
+            let store = transaction.objectStore('negociacoes');
+
+             let negociacao = new Negociacao(new Date(), 1, 200);
+            
+            // Adicionando objeto dentro do ObjectSotre, que vai me retornar uma requisição abaixo
+             let request = store.add(negociacao);
+            
+
+            request.onsuccess = e =>{
+
+                console.log('Negociação incluida com sucesso');
+            };
+
+            request.onerror = e =>{
+
+                console.log('Não foi possível incluir a negociação');
+            };
+
+        }
+
+        // Listando negociações incluídas
+        function listaTodos() {
+            // Pedindo a transação. No primeiro primeiro parâmetro eu digo pra qual ObjectStore e no segundo qual a ação desejo fazer
+            let transaction = connection.transaction(['negociacoes'], 'readwrite');
+
+            // Obtendo a ObjectStore da transação
+            let store = transaction.objectStore('negociacoes');
+
+            let cursor = store.openCursor();
+
+            let negociacoes = [];
+
+            // Não entendi muito bem o que fiz aqui abaixo, mas funcionou rs
+            cursor.onsuccess = e => {
+
+                let atual = e.target.result;
+
+                if(atual){
+
+                    let dado = atual.value;
+
+                    negociacoes.push(new Negociacao(dado._data, dado._quantidade, dado._valor));
+
+                    atual.continue();
+
+                } else {
+
+                    console.log(negociacoes);
+                }
+
+                cursor.onerror = e => {
+                    
+                    console.log(e.target.error.name);
+                }
+
+            };
+
+        }
+
+    </script>
+</body>
+</html>
