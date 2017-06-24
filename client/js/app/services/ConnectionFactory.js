@@ -1,10 +1,12 @@
 var ConnectionFactory = (function () {
 
-var stores = ['negociacoes'];
-var version = 10;
-var dbName = 'frameNegociacao';
+const stores = ['negociacoes'];
+const version = 10;
+const dbName = 'frameNegociacao';
 
 var connection = null;
+
+var close = null;
 
 class ConnectionFactory{
 
@@ -24,7 +26,13 @@ class ConnectionFactory{
             };
 
             openRequest.onsuccess = e => {
-                if(!connection) connection = e.target.result;
+                if (!connection) { 
+                    connection = e.target.result;
+                    close = connection.close.bind(connection);
+                    connection.close = function(){
+                        throw new Error('Você não pode fechar diretamente a conexão');
+                    };
+                }
                 resolve(connection);
 
             };
@@ -41,12 +49,18 @@ class ConnectionFactory{
 
     static _createStores(connection) {
 
-        stores.forEach(store => {
-            
-                if (connection.objectStoreNames.contains(store)) 
-                    connection.deleteObjectStore(store);
-                connection.createObjectStore(store, { autoIncrement: true });
+        stores.forEach(store => {            
+            if (connection.objectStoreNames.contains(store)) 
+                connection.deleteObjectStore(store);
+            connection.createObjectStore(store, { autoIncrement: true });
         });
+    }
+
+    static closeConnection(){
+        if(connection){
+            close();
+            connection = null;
+        }
     }
 
 }
