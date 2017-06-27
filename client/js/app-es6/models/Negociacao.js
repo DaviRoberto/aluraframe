@@ -1,5 +1,5 @@
 // Model = uma abstração do mundo real, os dados da aplicação e as regras de negócio que eu preciso para fazer uma negociação
-class Negociacao {
+export class Negociacao {
     
     constructor(data, quantidade, valor){
 

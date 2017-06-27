@@ -1,5 +1,5 @@
 // Factory - é um padrão que consiste em uma classe especializada para criar um determinado tipo de objeto
-class ProxyFactory {
+export class ProxyFactory {
 
     static create(objeto, props, acao) {
 
