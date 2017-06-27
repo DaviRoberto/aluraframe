@@ -19,6 +19,11 @@ class NegociacaoController{
             new MensagemView($('#mensagemView')),
             'texto');
 
+        this._init();
+    }
+
+    _init() {
+
         ConnectionFactory
             .getConnection()
             .then(connection => new NegociacaoDao (connection))
@@ -31,6 +36,10 @@ class NegociacaoController{
                 this._mensagem.texto = erro;
             });
 
+        setInterval(() =>{
+            this.importaNegociacoes();            
+        }, 3000);
+        
     }
     
     adiciona(event){
@@ -57,21 +66,22 @@ class NegociacaoController{
     importaNegociacoes() {
 
         let service = new NegociacaoService();
-
-        Promise.all([
-            service.obterNegociacoesDaSemana(),
-            service.obterNegociacoesDaSemanaAnterior(),
-            service.obterNegociacoesDaSemanaRetrasada()]
-            ).then(negociacoes => {
-                negociacoes
-                    .reduce((arrayAchatado, array) => arrayAchatado.concat(array), [])
-                    .forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-                this._mensagem.texto = 'Negociações importadas com sucesso'
-            })
-            .catch(erro => this._mensagem.texto = erro);
+        service
+            .obterNegociacoes()
+            .then(negociacoes => 
+                negociacoes.filter(negociacao => 
+                    !this._listaNegociacoes.negociacoes.some(negociacaoExistente => 
+                        JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente))                    
+                )
+            )
+            .then(negociacoes => negociacoes.forEach(negociacao => {
+                this._listaNegociacoes.adiciona(negociacao);
+                this._mensagem.texto = 'Negociações do período importadas'   
+            }))
+            .catch(erro => this._mensagem.texto = erro);                              
     }
 
-    apaga(){
+    apaga() {
         
         ConnectionFactory
             .getConnection()
