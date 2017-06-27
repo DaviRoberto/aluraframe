@@ -1,22 +1,34 @@
-class ListaNegociacoes{
-    constructor(armadilha){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ListaNegociacoes = function () {
+    function ListaNegociacoes(armadilha) {
+        _classCallCheck(this, ListaNegociacoes);
 
         this._negociacoes = [];
-        
     }
 
-    adiciona(negociacao){
-         this._negociacoes.push(negociacao);        
-    }
+    _createClass(ListaNegociacoes, [{
+        key: "adiciona",
+        value: function adiciona(negociacao) {
+            this._negociacoes.push(negociacao);
+        }
+    }, {
+        key: "esvazia",
+        value: function esvazia() {
+            this._negociacoes = [];
+        }
+    }, {
+        key: "negociacoes",
+        get: function get() {
+            // [].concat(this._negociacoes) - programação defensiva, estou criando uma cópia caso alguém rode um script para alterar minha negociação quando estiver sendo criada, irá alterar a cópia, não a original. 
+            return [].concat(this._negociacoes);
+        }
+    }]);
 
-    get negociacoes(){
-        // [].concat(this._negociacoes) - programação defensiva, estou criando uma cópia caso alguém rode um script para alterar minha negociação quando estiver sendo criada, irá alterar a cópia, não a original. 
-        return [].concat(this._negociacoes);
-    }
-
-    esvazia(){
-        this._negociacoes = [];
-        
-    }
-
-}
+    return ListaNegociacoes;
+}();
+//# sourceMappingURL=ListaNegociacoes.js.map
