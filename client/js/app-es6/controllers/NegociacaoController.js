@@ -1,14 +1,14 @@
-import {ListaNegociacoes} from '../modelo/ListaNegociacoes';
-import {Mensagem} from '../modelo/Mensagem';
-import {NegociacaoView} from '../view/NegociacaoView';
-import {MensagemView} from '../view/MensagemView';
+import {ListaNegociacoes} from '../models/ListaNegociacoes';
+import {Mensagem} from '../models/Mensagem';
+import {NegociacoesView} from '../views/NegociacoesView';
+import {MensagemView} from '../views/MensagemView';
 import {NegociacaoService} from '../services/NegociacaoService';
 import {DateHelper} from '../helpers/DateHelper';
 import {Bind} from '../helpers/Bind';
 import {Negociacao} from '../models/Negociacao';
 
 // Obtendo valores para criar uma negociação de acordo com as regras de negócio da model 'Negociacao.js'
-class NegociacaoController{
+export class NegociacaoController{
     
     constructor(){
         let $ = document.querySelector.bind(document);
